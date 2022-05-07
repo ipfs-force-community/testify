@@ -1,7 +1,6 @@
 package suite
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"reflect"
@@ -15,7 +14,7 @@ import (
 )
 
 var allTestsFilter = func(_, _ string) (bool, error) { return true, nil }
-var matchMethod = flag.String("testify.m", "", "regular expression to select tests of the testify suite to run")
+var matchMethod = ""
 
 // Suite is a basic testing suite with methods for storing and
 // retrieving the current *testing.T context.
