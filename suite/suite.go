@@ -181,7 +181,7 @@ func methodFilter(name string) (bool, error) {
 	if ok, _ := regexp.MatchString("^Test", name); !ok {
 		return false, nil
 	}
-	return regexp.MatchString(*matchMethod, name)
+	return regexp.MatchString("", name)
 }
 
 func runTests(t testing.TB, tests []testing.InternalTest) {

@@ -5,10 +5,6 @@
 
 package assert
 
-import (
-	time "time"
-)
-
 // Condition uses a Comparison to assert a complex condition.
 func (a *Assertions) Condition(comp Comparison, msgAndArgs ...interface{}) bool {
 	if h, ok := a.t.(tHelper); ok {
@@ -49,24 +45,6 @@ func (a *Assertions) Containsf(s interface{}, contains interface{}, msg string, 
 		h.Helper()
 	}
 	return Containsf(a.t, s, contains, msg, args...)
-}
-
-// DirExists checks whether a directory exists in the given path. It also fails
-// if the path is a file rather a directory or there is an error checking whether it exists.
-func (a *Assertions) DirExists(path string, msgAndArgs ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return DirExists(a.t, path, msgAndArgs...)
-}
-
-// DirExistsf checks whether a directory exists in the given path. It also fails
-// if the path is a file rather a directory or there is an error checking whether it exists.
-func (a *Assertions) DirExistsf(path string, msg string, args ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return DirExistsf(a.t, path, msg, args...)
 }
 
 // ElementsMatch asserts that the specified listA(array, slice...) is equal to specified
@@ -251,28 +229,6 @@ func (a *Assertions) Errorf(err error, msg string, args ...interface{}) bool {
 	return Errorf(a.t, err, msg, args...)
 }
 
-// Eventually asserts that given condition will be met in waitFor time,
-// periodically checking target function each tick.
-//
-//    a.Eventually(func() bool { return true; }, time.Second, 10*time.Millisecond)
-func (a *Assertions) Eventually(condition func() bool, waitFor time.Duration, tick time.Duration, msgAndArgs ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return Eventually(a.t, condition, waitFor, tick, msgAndArgs...)
-}
-
-// Eventuallyf asserts that given condition will be met in waitFor time,
-// periodically checking target function each tick.
-//
-//    a.Eventuallyf(func() bool { return true; }, time.Second, 10*time.Millisecond, "error message %s", "formatted")
-func (a *Assertions) Eventuallyf(condition func() bool, waitFor time.Duration, tick time.Duration, msg string, args ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return Eventuallyf(a.t, condition, waitFor, tick, msg, args...)
-}
-
 // Exactly asserts that two objects are equal in value and type.
 //
 //    a.Exactly(int32(123), int64(123))
@@ -343,24 +299,6 @@ func (a *Assertions) Falsef(value bool, msg string, args ...interface{}) bool {
 		h.Helper()
 	}
 	return Falsef(a.t, value, msg, args...)
-}
-
-// FileExists checks whether a file exists in the given path. It also fails if
-// the path points to a directory or there is an error when trying to check the file.
-func (a *Assertions) FileExists(path string, msgAndArgs ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return FileExists(a.t, path, msgAndArgs...)
-}
-
-// FileExistsf checks whether a file exists in the given path. It also fails if
-// the path points to a directory or there is an error when trying to check the file.
-func (a *Assertions) FileExistsf(path string, msg string, args ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return FileExistsf(a.t, path, msg, args...)
 }
 
 // Greater asserts that the first element is greater than the second
@@ -743,28 +681,6 @@ func (a *Assertions) Negativef(e interface{}, msg string, args ...interface{}) b
 	return Negativef(a.t, e, msg, args...)
 }
 
-// Never asserts that the given condition doesn't satisfy in waitFor time,
-// periodically checking the target function each tick.
-//
-//    a.Never(func() bool { return false; }, time.Second, 10*time.Millisecond)
-func (a *Assertions) Never(condition func() bool, waitFor time.Duration, tick time.Duration, msgAndArgs ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return Never(a.t, condition, waitFor, tick, msgAndArgs...)
-}
-
-// Neverf asserts that the given condition doesn't satisfy in waitFor time,
-// periodically checking the target function each tick.
-//
-//    a.Neverf(func() bool { return false; }, time.Second, 10*time.Millisecond, "error message %s", "formatted")
-func (a *Assertions) Neverf(condition func() bool, waitFor time.Duration, tick time.Duration, msg string, args ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return Neverf(a.t, condition, waitFor, tick, msg, args...)
-}
-
 // Nil asserts that the specified object is nil.
 //
 //    a.Nil(err)
@@ -783,24 +699,6 @@ func (a *Assertions) Nilf(object interface{}, msg string, args ...interface{}) b
 		h.Helper()
 	}
 	return Nilf(a.t, object, msg, args...)
-}
-
-// NoDirExists checks whether a directory does not exist in the given path.
-// It fails if the path points to an existing _directory_ only.
-func (a *Assertions) NoDirExists(path string, msgAndArgs ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return NoDirExists(a.t, path, msgAndArgs...)
-}
-
-// NoDirExistsf checks whether a directory does not exist in the given path.
-// It fails if the path points to an existing _directory_ only.
-func (a *Assertions) NoDirExistsf(path string, msg string, args ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return NoDirExistsf(a.t, path, msg, args...)
 }
 
 // NoError asserts that a function returned no error (i.e. `nil`).
@@ -827,24 +725,6 @@ func (a *Assertions) NoErrorf(err error, msg string, args ...interface{}) bool {
 		h.Helper()
 	}
 	return NoErrorf(a.t, err, msg, args...)
-}
-
-// NoFileExists checks whether a file does not exist in a given path. It fails
-// if the path points to an existing _file_ only.
-func (a *Assertions) NoFileExists(path string, msgAndArgs ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return NoFileExists(a.t, path, msgAndArgs...)
-}
-
-// NoFileExistsf checks whether a file does not exist in a given path. It fails
-// if the path points to an existing _file_ only.
-func (a *Assertions) NoFileExistsf(path string, msg string, args ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return NoFileExistsf(a.t, path, msg, args...)
 }
 
 // NotContains asserts that the specified string, list(array, slice...) or map does NOT contain the
@@ -1265,26 +1145,6 @@ func (a *Assertions) Truef(value bool, msg string, args ...interface{}) bool {
 		h.Helper()
 	}
 	return Truef(a.t, value, msg, args...)
-}
-
-// WithinDuration asserts that the two times are within duration delta of each other.
-//
-//   a.WithinDuration(time.Now(), time.Now(), 10*time.Second)
-func (a *Assertions) WithinDuration(expected time.Time, actual time.Time, delta time.Duration, msgAndArgs ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return WithinDuration(a.t, expected, actual, delta, msgAndArgs...)
-}
-
-// WithinDurationf asserts that the two times are within duration delta of each other.
-//
-//   a.WithinDurationf(time.Now(), time.Now(), 10*time.Second, "error message %s", "formatted")
-func (a *Assertions) WithinDurationf(expected time.Time, actual time.Time, delta time.Duration, msg string, args ...interface{}) bool {
-	if h, ok := a.t.(tHelper); ok {
-		h.Helper()
-	}
-	return WithinDurationf(a.t, expected, actual, delta, msg, args...)
 }
 
 // Zero asserts that i is the zero value for its type.

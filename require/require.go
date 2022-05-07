@@ -7,9 +7,6 @@ package require
 
 import (
 	assert "github.com/stretchr/testify/assert"
-	http "net/http"
-	url "net/url"
-	time "time"
 )
 
 // Condition uses a Comparison to assert a complex condition.
@@ -61,30 +58,6 @@ func Containsf(t TestingT, s interface{}, contains interface{}, msg string, args
 		h.Helper()
 	}
 	if assert.Containsf(t, s, contains, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
-// DirExists checks whether a directory exists in the given path. It also fails
-// if the path is a file rather a directory or there is an error checking whether it exists.
-func DirExists(t TestingT, path string, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.DirExists(t, path, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// DirExistsf checks whether a directory exists in the given path. It also fails
-// if the path is a file rather a directory or there is an error checking whether it exists.
-func DirExistsf(t TestingT, path string, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.DirExistsf(t, path, msg, args...) {
 		return
 	}
 	t.FailNow()
@@ -320,34 +293,6 @@ func Errorf(t TestingT, err error, msg string, args ...interface{}) {
 	t.FailNow()
 }
 
-// Eventually asserts that given condition will be met in waitFor time,
-// periodically checking target function each tick.
-//
-//    assert.Eventually(t, func() bool { return true; }, time.Second, 10*time.Millisecond)
-func Eventually(t TestingT, condition func() bool, waitFor time.Duration, tick time.Duration, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.Eventually(t, condition, waitFor, tick, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// Eventuallyf asserts that given condition will be met in waitFor time,
-// periodically checking target function each tick.
-//
-//    assert.Eventuallyf(t, func() bool { return true; }, time.Second, 10*time.Millisecond, "error message %s", "formatted")
-func Eventuallyf(t TestingT, condition func() bool, waitFor time.Duration, tick time.Duration, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.Eventuallyf(t, condition, waitFor, tick, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
 // Exactly asserts that two objects are equal in value and type.
 //
 //    assert.Exactly(t, int32(123), int64(123))
@@ -444,30 +389,6 @@ func Falsef(t TestingT, value bool, msg string, args ...interface{}) {
 	t.FailNow()
 }
 
-// FileExists checks whether a file exists in the given path. It also fails if
-// the path points to a directory or there is an error when trying to check the file.
-func FileExists(t TestingT, path string, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.FileExists(t, path, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// FileExistsf checks whether a file exists in the given path. It also fails if
-// the path points to a directory or there is an error when trying to check the file.
-func FileExistsf(t TestingT, path string, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.FileExistsf(t, path, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
 // Greater asserts that the first element is greater than the second
 //
 //    assert.Greater(t, 2, 1)
@@ -525,190 +446,6 @@ func Greaterf(t TestingT, e1 interface{}, e2 interface{}, msg string, args ...in
 		h.Helper()
 	}
 	if assert.Greaterf(t, e1, e2, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPBodyContains asserts that a specified handler returns a
-// body that contains a string.
-//
-//  assert.HTTPBodyContains(t, myHandler, "GET", "www.google.com", nil, "I'm Feeling Lucky")
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPBodyContains(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, str interface{}, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPBodyContains(t, handler, method, url, values, str, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPBodyContainsf asserts that a specified handler returns a
-// body that contains a string.
-//
-//  assert.HTTPBodyContainsf(t, myHandler, "GET", "www.google.com", nil, "I'm Feeling Lucky", "error message %s", "formatted")
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPBodyContainsf(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, str interface{}, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPBodyContainsf(t, handler, method, url, values, str, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPBodyNotContains asserts that a specified handler returns a
-// body that does not contain a string.
-//
-//  assert.HTTPBodyNotContains(t, myHandler, "GET", "www.google.com", nil, "I'm Feeling Lucky")
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPBodyNotContains(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, str interface{}, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPBodyNotContains(t, handler, method, url, values, str, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPBodyNotContainsf asserts that a specified handler returns a
-// body that does not contain a string.
-//
-//  assert.HTTPBodyNotContainsf(t, myHandler, "GET", "www.google.com", nil, "I'm Feeling Lucky", "error message %s", "formatted")
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPBodyNotContainsf(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, str interface{}, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPBodyNotContainsf(t, handler, method, url, values, str, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPError asserts that a specified handler returns an error status code.
-//
-//  assert.HTTPError(t, myHandler, "POST", "/a/b/c", url.Values{"a": []string{"b", "c"}}
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPError(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPError(t, handler, method, url, values, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPErrorf asserts that a specified handler returns an error status code.
-//
-//  assert.HTTPErrorf(t, myHandler, "POST", "/a/b/c", url.Values{"a": []string{"b", "c"}}
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPErrorf(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPErrorf(t, handler, method, url, values, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPRedirect asserts that a specified handler returns a redirect status code.
-//
-//  assert.HTTPRedirect(t, myHandler, "GET", "/a/b/c", url.Values{"a": []string{"b", "c"}}
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPRedirect(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPRedirect(t, handler, method, url, values, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPRedirectf asserts that a specified handler returns a redirect status code.
-//
-//  assert.HTTPRedirectf(t, myHandler, "GET", "/a/b/c", url.Values{"a": []string{"b", "c"}}
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPRedirectf(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPRedirectf(t, handler, method, url, values, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPStatusCode asserts that a specified handler returns a specified status code.
-//
-//  assert.HTTPStatusCode(t, myHandler, "GET", "/notImplemented", nil, 501)
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPStatusCode(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, statuscode int, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPStatusCode(t, handler, method, url, values, statuscode, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPStatusCodef asserts that a specified handler returns a specified status code.
-//
-//  assert.HTTPStatusCodef(t, myHandler, "GET", "/notImplemented", nil, 501, "error message %s", "formatted")
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPStatusCodef(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, statuscode int, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPStatusCodef(t, handler, method, url, values, statuscode, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPSuccess asserts that a specified handler returns a success status code.
-//
-//  assert.HTTPSuccess(t, myHandler, "POST", "http://www.google.com", nil)
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPSuccess(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPSuccess(t, handler, method, url, values, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// HTTPSuccessf asserts that a specified handler returns a success status code.
-//
-//  assert.HTTPSuccessf(t, myHandler, "POST", "http://www.google.com", nil, "error message %s", "formatted")
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPSuccessf(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.HTTPSuccessf(t, handler, method, url, values, msg, args...) {
 		return
 	}
 	t.FailNow()
@@ -1140,34 +877,6 @@ func Negativef(t TestingT, e interface{}, msg string, args ...interface{}) {
 	t.FailNow()
 }
 
-// Never asserts that the given condition doesn't satisfy in waitFor time,
-// periodically checking the target function each tick.
-//
-//    assert.Never(t, func() bool { return false; }, time.Second, 10*time.Millisecond)
-func Never(t TestingT, condition func() bool, waitFor time.Duration, tick time.Duration, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.Never(t, condition, waitFor, tick, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// Neverf asserts that the given condition doesn't satisfy in waitFor time,
-// periodically checking the target function each tick.
-//
-//    assert.Neverf(t, func() bool { return false; }, time.Second, 10*time.Millisecond, "error message %s", "formatted")
-func Neverf(t TestingT, condition func() bool, waitFor time.Duration, tick time.Duration, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.Neverf(t, condition, waitFor, tick, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
 // Nil asserts that the specified object is nil.
 //
 //    assert.Nil(t, err)
@@ -1189,30 +898,6 @@ func Nilf(t TestingT, object interface{}, msg string, args ...interface{}) {
 		h.Helper()
 	}
 	if assert.Nilf(t, object, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
-// NoDirExists checks whether a directory does not exist in the given path.
-// It fails if the path points to an existing _directory_ only.
-func NoDirExists(t TestingT, path string, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.NoDirExists(t, path, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// NoDirExistsf checks whether a directory does not exist in the given path.
-// It fails if the path points to an existing _directory_ only.
-func NoDirExistsf(t TestingT, path string, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.NoDirExistsf(t, path, msg, args...) {
 		return
 	}
 	t.FailNow()
@@ -1245,30 +930,6 @@ func NoErrorf(t TestingT, err error, msg string, args ...interface{}) {
 		h.Helper()
 	}
 	if assert.NoErrorf(t, err, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
-// NoFileExists checks whether a file does not exist in a given path. It fails
-// if the path points to an existing _file_ only.
-func NoFileExists(t TestingT, path string, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.NoFileExists(t, path, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// NoFileExistsf checks whether a file does not exist in a given path. It fails
-// if the path points to an existing _file_ only.
-func NoFileExistsf(t TestingT, path string, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.NoFileExistsf(t, path, msg, args...) {
 		return
 	}
 	t.FailNow()
@@ -1808,53 +1469,6 @@ func Truef(t TestingT, value bool, msg string, args ...interface{}) {
 	t.FailNow()
 }
 
-// WithinDuration asserts that the two times are within duration delta of each other.
-//
-//   assert.WithinDuration(t, time.Now(), time.Now(), 10*time.Second)
-func WithinDuration(t TestingT, expected time.Time, actual time.Time, delta time.Duration, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.WithinDuration(t, expected, actual, delta, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// WithinDurationf asserts that the two times are within duration delta of each other.
-//
-//   assert.WithinDurationf(t, time.Now(), time.Now(), 10*time.Second, "error message %s", "formatted")
-func WithinDurationf(t TestingT, expected time.Time, actual time.Time, delta time.Duration, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.WithinDurationf(t, expected, actual, delta, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
-
-// YAMLEq asserts that two YAML strings are equivalent.
-func YAMLEq(t TestingT, expected string, actual string, msgAndArgs ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.YAMLEq(t, expected, actual, msgAndArgs...) {
-		return
-	}
-	t.FailNow()
-}
-
-// YAMLEqf asserts that two YAML strings are equivalent.
-func YAMLEqf(t TestingT, expected string, actual string, msg string, args ...interface{}) {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	if assert.YAMLEqf(t, expected, actual, msg, args...) {
-		return
-	}
-	t.FailNow()
-}
 
 // Zero asserts that i is the zero value for its type.
 func Zero(t TestingT, i interface{}, msgAndArgs ...interface{}) {

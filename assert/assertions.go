@@ -12,7 +12,6 @@ import (
 	"runtime"
 	"runtime/debug"
 	"strings"
-	"time"
 	"unicode"
 	"unicode/utf8"
 
@@ -429,10 +428,6 @@ func formatUnequalValues(expected, actual interface{}) (e string, a string) {
 	if reflect.TypeOf(expected) != reflect.TypeOf(actual) {
 		return fmt.Sprintf("%T(%s)", expected, truncatingFormat(expected)),
 			fmt.Sprintf("%T(%s)", actual, truncatingFormat(actual))
-	}
-	switch expected.(type) {
-	case time.Duration:
-		return fmt.Sprintf("%v", expected), fmt.Sprintf("%v", actual)
 	}
 	return truncatingFormat(expected), truncatingFormat(actual)
 }
@@ -1093,22 +1088,6 @@ func NotPanics(t TestingT, f PanicTestFunc, msgAndArgs ...interface{}) bool {
 	return true
 }
 
-// WithinDuration asserts that the two times are within duration delta of each other.
-//
-//   assert.WithinDuration(t, time.Now(), time.Now(), 10*time.Second)
-func WithinDuration(t TestingT, expected, actual time.Time, delta time.Duration, msgAndArgs ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-
-	dt := expected.Sub(actual)
-	if dt < -delta || dt > delta {
-		return Fail(t, fmt.Sprintf("Max difference between %v and %v allowed is %v, but difference was %v", expected, actual, delta, dt), msgAndArgs...)
-	}
-
-	return true
-}
-
 func toFloat(x interface{}) (float64, bool) {
 	var xf float64
 	xok := true
@@ -1138,8 +1117,6 @@ func toFloat(x interface{}) (float64, bool) {
 		xf = float64(xn)
 	case float64:
 		xf = xn
-	case time.Duration:
-		xf = float64(xn)
 	default:
 		xok = false
 	}
@@ -1534,72 +1511,6 @@ var spewConfig = spew.ConfigState{
 
 type tHelper interface {
 	Helper()
-}
-
-// Eventually asserts that given condition will be met in waitFor time,
-// periodically checking target function each tick.
-//
-//    assert.Eventually(t, func() bool { return true; }, time.Second, 10*time.Millisecond)
-func Eventually(t TestingT, condition func() bool, waitFor time.Duration, tick time.Duration, msgAndArgs ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-
-	ch := make(chan bool, 1)
-
-	timer := time.NewTimer(waitFor)
-	defer timer.Stop()
-
-	ticker := time.NewTicker(tick)
-	defer ticker.Stop()
-
-	for tick := ticker.C; ; {
-		select {
-		case <-timer.C:
-			return Fail(t, "Condition never satisfied", msgAndArgs...)
-		case <-tick:
-			tick = nil
-			go func() { ch <- condition() }()
-		case v := <-ch:
-			if v {
-				return true
-			}
-			tick = ticker.C
-		}
-	}
-}
-
-// Never asserts that the given condition doesn't satisfy in waitFor time,
-// periodically checking the target function each tick.
-//
-//    assert.Never(t, func() bool { return false; }, time.Second, 10*time.Millisecond)
-func Never(t TestingT, condition func() bool, waitFor time.Duration, tick time.Duration, msgAndArgs ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-
-	ch := make(chan bool, 1)
-
-	timer := time.NewTimer(waitFor)
-	defer timer.Stop()
-
-	ticker := time.NewTicker(tick)
-	defer ticker.Stop()
-
-	for tick := ticker.C; ; {
-		select {
-		case <-timer.C:
-			return true
-		case <-tick:
-			tick = nil
-			go func() { ch <- condition() }()
-		case v := <-ch:
-			if v {
-				return Fail(t, "Condition satisfied", msgAndArgs...)
-			}
-			tick = ticker.C
-		}
-	}
 }
 
 // ErrorIs asserts that at least one of the errors in err's chain matches target.

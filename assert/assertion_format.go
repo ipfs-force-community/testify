@@ -5,10 +5,6 @@
 
 package assert
 
-import (
-	time "time"
-)
-
 // Conditionf uses a Comparison to assert a complex condition.
 func Conditionf(t TestingT, comp Comparison, msg string, args ...interface{}) bool {
 	if h, ok := t.(tHelper); ok {
@@ -28,15 +24,6 @@ func Containsf(t TestingT, s interface{}, contains interface{}, msg string, args
 		h.Helper()
 	}
 	return Contains(t, s, contains, append([]interface{}{msg}, args...)...)
-}
-
-// DirExistsf checks whether a directory exists in the given path. It also fails
-// if the path is a file rather a directory or there is an error checking whether it exists.
-func DirExistsf(t TestingT, path string, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return DirExists(t, path, append([]interface{}{msg}, args...)...)
 }
 
 // ElementsMatchf asserts that the specified listA(array, slice...) is equal to specified
@@ -130,17 +117,6 @@ func ErrorIsf(t TestingT, err error, target error, msg string, args ...interface
 	return ErrorIs(t, err, target, append([]interface{}{msg}, args...)...)
 }
 
-// Eventuallyf asserts that given condition will be met in waitFor time,
-// periodically checking target function each tick.
-//
-//    assert.Eventuallyf(t, func() bool { return true; }, time.Second, 10*time.Millisecond, "error message %s", "formatted")
-func Eventuallyf(t TestingT, condition func() bool, waitFor time.Duration, tick time.Duration, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return Eventually(t, condition, waitFor, tick, append([]interface{}{msg}, args...)...)
-}
-
 // Exactlyf asserts that two objects are equal in value and type.
 //
 //    assert.Exactlyf(t, int32(123), int64(123), "error message %s", "formatted")
@@ -175,15 +151,6 @@ func Falsef(t TestingT, value bool, msg string, args ...interface{}) bool {
 		h.Helper()
 	}
 	return False(t, value, append([]interface{}{msg}, args...)...)
-}
-
-// FileExistsf checks whether a file exists in the given path. It also fails if
-// the path points to a directory or there is an error when trying to check the file.
-func FileExistsf(t TestingT, path string, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return FileExists(t, path, append([]interface{}{msg}, args...)...)
 }
 
 // Greaterf asserts that the first element is greater than the second
@@ -376,17 +343,6 @@ func Negativef(t TestingT, e interface{}, msg string, args ...interface{}) bool 
 	return Negative(t, e, append([]interface{}{msg}, args...)...)
 }
 
-// Neverf asserts that the given condition doesn't satisfy in waitFor time,
-// periodically checking the target function each tick.
-//
-//    assert.Neverf(t, func() bool { return false; }, time.Second, 10*time.Millisecond, "error message %s", "formatted")
-func Neverf(t TestingT, condition func() bool, waitFor time.Duration, tick time.Duration, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return Never(t, condition, waitFor, tick, append([]interface{}{msg}, args...)...)
-}
-
 // Nilf asserts that the specified object is nil.
 //
 //    assert.Nilf(t, err, "error message %s", "formatted")
@@ -395,15 +351,6 @@ func Nilf(t TestingT, object interface{}, msg string, args ...interface{}) bool 
 		h.Helper()
 	}
 	return Nil(t, object, append([]interface{}{msg}, args...)...)
-}
-
-// NoDirExistsf checks whether a directory does not exist in the given path.
-// It fails if the path points to an existing _directory_ only.
-func NoDirExistsf(t TestingT, path string, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return NoDirExists(t, path, append([]interface{}{msg}, args...)...)
 }
 
 // NoErrorf asserts that a function returned no error (i.e. `nil`).
@@ -417,15 +364,6 @@ func NoErrorf(t TestingT, err error, msg string, args ...interface{}) bool {
 		h.Helper()
 	}
 	return NoError(t, err, append([]interface{}{msg}, args...)...)
-}
-
-// NoFileExistsf checks whether a file does not exist in a given path. It fails
-// if the path points to an existing _file_ only.
-func NoFileExistsf(t TestingT, path string, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return NoFileExists(t, path, append([]interface{}{msg}, args...)...)
 }
 
 // NotContainsf asserts that the specified string, list(array, slice...) or map does NOT contain the
@@ -637,17 +575,6 @@ func Truef(t TestingT, value bool, msg string, args ...interface{}) bool {
 	}
 	return True(t, value, append([]interface{}{msg}, args...)...)
 }
-
-// WithinDurationf asserts that the two times are within duration delta of each other.
-//
-//   assert.WithinDurationf(t, time.Now(), time.Now(), 10*time.Second, "error message %s", "formatted")
-func WithinDurationf(t TestingT, expected time.Time, actual time.Time, delta time.Duration, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return WithinDuration(t, expected, actual, delta, append([]interface{}{msg}, args...)...)
-}
-
 
 // Zerof asserts that i is the zero value for its type.
 func Zerof(t TestingT, i interface{}, msg string, args ...interface{}) bool {
