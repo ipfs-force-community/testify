@@ -6,8 +6,6 @@
 package assert
 
 import (
-	http "net/http"
-	url "net/url"
 	time "time"
 )
 
@@ -211,80 +209,6 @@ func GreaterOrEqualf(t TestingT, e1 interface{}, e2 interface{}, msg string, arg
 		h.Helper()
 	}
 	return GreaterOrEqual(t, e1, e2, append([]interface{}{msg}, args...)...)
-}
-
-// HTTPBodyContainsf asserts that a specified handler returns a
-// body that contains a string.
-//
-//  assert.HTTPBodyContainsf(t, myHandler, "GET", "www.google.com", nil, "I'm Feeling Lucky", "error message %s", "formatted")
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPBodyContainsf(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, str interface{}, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return HTTPBodyContains(t, handler, method, url, values, str, append([]interface{}{msg}, args...)...)
-}
-
-// HTTPBodyNotContainsf asserts that a specified handler returns a
-// body that does not contain a string.
-//
-//  assert.HTTPBodyNotContainsf(t, myHandler, "GET", "www.google.com", nil, "I'm Feeling Lucky", "error message %s", "formatted")
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPBodyNotContainsf(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, str interface{}, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return HTTPBodyNotContains(t, handler, method, url, values, str, append([]interface{}{msg}, args...)...)
-}
-
-// HTTPErrorf asserts that a specified handler returns an error status code.
-//
-//  assert.HTTPErrorf(t, myHandler, "POST", "/a/b/c", url.Values{"a": []string{"b", "c"}}
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPErrorf(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return HTTPError(t, handler, method, url, values, append([]interface{}{msg}, args...)...)
-}
-
-// HTTPRedirectf asserts that a specified handler returns a redirect status code.
-//
-//  assert.HTTPRedirectf(t, myHandler, "GET", "/a/b/c", url.Values{"a": []string{"b", "c"}}
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPRedirectf(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return HTTPRedirect(t, handler, method, url, values, append([]interface{}{msg}, args...)...)
-}
-
-// HTTPStatusCodef asserts that a specified handler returns a specified status code.
-//
-//  assert.HTTPStatusCodef(t, myHandler, "GET", "/notImplemented", nil, 501, "error message %s", "formatted")
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPStatusCodef(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, statuscode int, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return HTTPStatusCode(t, handler, method, url, values, statuscode, append([]interface{}{msg}, args...)...)
-}
-
-// HTTPSuccessf asserts that a specified handler returns a success status code.
-//
-//  assert.HTTPSuccessf(t, myHandler, "POST", "http://www.google.com", nil, "error message %s", "formatted")
-//
-// Returns whether the assertion was successful (true) or not (false).
-func HTTPSuccessf(t TestingT, handler http.HandlerFunc, method string, url string, values url.Values, msg string, args ...interface{}) bool {
-	if h, ok := t.(tHelper); ok {
-		h.Helper()
-	}
-	return HTTPSuccess(t, handler, method, url, values, append([]interface{}{msg}, args...)...)
 }
 
 // Implementsf asserts that an object is implemented by the specified interface.
